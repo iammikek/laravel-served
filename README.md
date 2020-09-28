@@ -1,15 +1,23 @@
 # Laravel Served
 
-Laravel Served is a dockerized version of `php artisan serve`. It makes it easy to quickly start a development environment the laravel way (config).
+Laravel Served is a dockerized version of `php artisan serve`. It makes it easy to quickly start a development environment the laravel way (through a config file).
 
 The only things you need to get started is
 * Php (cli)
 * Docker
 * Laravel
 
-It is **not** meant to be a replacement for tools like laradock, but is just meant for starting a quick development environment on smaller projects with few special needs.
+>Beware: This package is under active development and major changes can occur at any point. It is therefore a good idea to read the documentation, and republish the config file after each new version.
 
->Beware: This package is under active development and can major changes can occur at any point. It is therefor a good idea to read the documentation, and republish the config file after each new version.
+## Available services
+These are the available services that Served provide. More will be added in the future. If you are missing something specific, just create a new issue, requesting it.
+* Php
+* Nginx
+* Apache2
+* Mysql
+* Postgres
+* Redis
+* Mailhog
 
 ## Installation
 Install the package using composer
@@ -130,11 +138,45 @@ To connect to the database from laravel you need to use the config key (in the e
             'password' => 'password',
         ],
 ```
+
 ### Postgres
-Coming soon
+To connect to postgresql from laravel you need to use the config key (in the example that would be `postgres`) as hostname. The port is the default for mysql (5432) and not the one specified in the config. To connect from outside of laravel, use the port specified in the config (eg. 54320) and 127.0.0.1
+```
+'postgres' => [
+            'service' => 'postgres',
+            'version' => '12.4',
+            'port' => 54320,
+            'database' => 'laravel',
+            'username' => 'laravel',
+            'password' => 'password',
+        ],
+```
 
 ### Redis
-Coming soon
+Add redis to the modules in php and then add redis to your extras array.
+```
+'redis' => [
+            'service' => 'redis',
+        ]
+```
+Change your `REDIS_HOST` in .env to whatever you use as the key (eg. redis)
+
+### Mailhog
+Add mailhog to your extras array.
+```
+'mail' => [
+            'service' => 'mailhog',
+            'port' => 8025
+        ]
+```
+Change your `MAIL_HOST` in .env to whatever you use as the key (eg. mail), and change `MAIL_PORT`to 1025. To see the mailbox, open http://localhost:8025 in your browser (replace 8025 with whatever port you set in config)
+
+## Testing
+To run tests with 
+```
+$ composer test
+```
+
 
 ## Todo
 - [ ] Testing!
@@ -145,4 +187,4 @@ Coming soon
 - [ ] Handle removal of volumes
 - [ ] Handle upgrades/downgrades of images
 - [ ] Pass cli output interface to other classes to allow outputting to cli from them
-- [ ] Test on other platforms than linux (Ubuntu)
+- [x] Test on other platforms than linux (Ubuntu)

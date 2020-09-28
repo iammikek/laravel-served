@@ -2,19 +2,19 @@
 
 namespace Sinnbeck\LaravelServed\Containers;
 
-class ApacheContainer extends Container
+class MailhogContainer extends Container
 {
     /**
      * @var string
      */
-    protected $port = '8080';
+    protected $port = '8025';
 
     /**
      * @return void
      */
     public function run(): void
     {
-        $this->shell->run('docker run -d --restart always --network="${:network}" --name "${:container_name}" -p "${:port}":80 -v "${:local_dir}":/app "${:image_name}"', $this->env());
+        $this->shell->run('docker run -d --restart always --network="${:network}" --network-alias="${:alias}" -p="${:port}":8025 --name "${:container_name}" "${:image_name}"', $this->env());
     }
 
     /**
@@ -24,10 +24,10 @@ class ApacheContainer extends Container
     {
         return [
             'network' => $this->projectName(),
+            'alias' => $this->name(),
+            'port' => $this->port(),
             'container_name' => $this->makeContainerName(),
             'image_name' => $this->makeImageName(),
-            'port' => $this->port(),
-            'local_dir' => base_path(),
         ];
     }
 }

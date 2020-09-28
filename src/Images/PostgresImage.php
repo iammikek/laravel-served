@@ -3,17 +3,17 @@
 
 namespace Sinnbeck\LaravelServed\Images;
 
-class MysqlImage extends Image
+class PostgresImage extends Image
 {
     /**
      * @var string
      */
-    protected $image = 'mysql';
+    protected $image = 'postgres';
 
     /**
      * @var string
      */
-    protected $tag = '5.7';
+    protected $tag = '12.4';
 
     /**
      * @var string
@@ -27,7 +27,6 @@ class MysqlImage extends Image
     {
         return [
             'imagename' => $this->makeImageName(),
-            'uid' => getmyuid(),
             'dockerfile' => $this->findDockerFile()
         ];
     }
@@ -40,11 +39,10 @@ class MysqlImage extends Image
         $command = $this->dockerFileBuilder
             ->from($this->imageName(), $this->imageTag())
             ->newLine()
-            ->comment('Setting env vars for mysql init')
-            ->env('MYSQL_ROOT_PASSWORD', 'password')
-            ->env('MYSQL_DATABASE', 'laravel')
-            ->env('MYSQL_USER', 'laravel')
-            ->env('MYSQL_PASSWORD', 'password');
+            ->comment('Setting env vars for postgres init')
+            ->env('POSTGRES_DB', 'laravel')
+            ->env('POSTGRES_USER', 'laravel')
+            ->env('POSTGRES_PASSWORD', 'password');
 
         return (string)$command;
     }

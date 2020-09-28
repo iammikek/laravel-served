@@ -5,24 +5,24 @@ namespace Sinnbeck\LaravelServed\Containers;
 
 use Illuminate\Support\Arr;
 
-class MysqlContainer extends Container
+class PostgresContainer extends Container
 {
     /**
      * @var string
      */
-    protected $port = '3306';
+    protected $port = '54320';
 
     /**
      * @var string
      */
-    protected $alias = 'mysql';
+    protected $alias = 'postgres';
 
     /**
      * @return void
      */
     public function run(): void
     {
-        $this->shell->run('docker run -d --restart always --network="${:network}" --name "${:container_name}" --network-alias="${:alias}" -p "${:port}":3306 -v "${:volume}":/var/lib/mysql/ "${:image_name}"', $this->env());
+        $this->shell->run('docker run -d --restart always --network="${:network}" --name "${:container_name}" --network-alias="${:alias}" -p "${:port}":5432 -v "${:volume}":/var/lib/postgresql/data "${:image_name}"', $this->env());
     }
 
     /**
